@@ -6,6 +6,8 @@ export default function useInput() {
     <input
       type="url"
       value={inputValue}
+      pattern="https://.*"
+      required
       onChange={(e) => setInputValue(e.target.value)}
     />
   );
