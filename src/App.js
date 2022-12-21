@@ -6,12 +6,27 @@ import DiamondIcon from "@mui/icons-material/Diamond";
 import { Button } from "@mui/material";
 import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import useInput from "./components/inputHook";
+import { useState } from "react";
 
 function App() {
   const [urlValue, setURLValue] = useInput("");
+  const [shortURLValue, setShortURLValue] = useState("");
 
-  function handleClick() {
-    console.log(urlValue);
+  async function handleClick() {
+    const newURL = { url: urlValue, ttlInSeconds: 60 };
+
+    await fetch("https://urlshortener.smef.io/urls", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newURL),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setShortURLValue(`https://urlshortener.smef.io/${data.id}`);
+      });
   }
 
   return (
@@ -34,7 +49,12 @@ function App() {
           Go!
         </StyledMaterialButton>
         <Arrow sx={{ fontSize: 70 }} />
-        <StyledInput readOnly type="text" />
+        <StyledInput
+          name="smallURL"
+          readOnly
+          type="text"
+          value={shortURLValue}
+        />
       </StyledMain>
     </>
   );
