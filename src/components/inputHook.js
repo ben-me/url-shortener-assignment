@@ -1,9 +1,10 @@
 import { useState } from "react";
+import styled from "styled-components";
 
 export default function useInput() {
   const [inputValue, setInputValue] = useState("");
   const input = (
-    <input
+    <StyledHook
       type="url"
       value={inputValue}
       pattern="https://.*"
@@ -13,3 +14,7 @@ export default function useInput() {
   );
   return [inputValue, input];
 }
+
+const StyledHook = styled.input`
+  width: 20rem;
+`;
