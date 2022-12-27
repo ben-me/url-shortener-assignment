@@ -18,6 +18,7 @@ export default function NavBar() {
 const NavigationBar = styled.nav`
   width: 100vw;
   height: 3.5rem;
+  padding-right: 1.5rem;
   position: fixed;
   top: 0;
   display: flex;
