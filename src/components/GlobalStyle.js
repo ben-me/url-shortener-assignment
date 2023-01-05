@@ -16,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
 /* dark mode user-agent-styles */
 
 html {
-  color-scheme: dark light;
+  color-scheme:  light;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -28,7 +28,7 @@ html {
 /* min body height */
 
 body {
-  min-height: 100vh;
+  min-height: 100%;
 }
 
 /* responsive images/videos */

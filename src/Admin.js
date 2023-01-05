@@ -2,10 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import NavigationBar from "./components/NavBar";
 import React from "react";
 import { useTable } from "react-table";
+import { IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import styled from "styled-components";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditDialog from "./components/EditDialog";
+import { Edit } from "@mui/icons-material";
 
 export default function Admin() {
   const [urlList, setUrlList] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState();
 
   async function fetchUrlData() {
     try {
@@ -28,10 +35,6 @@ export default function Admin() {
 
   const columns = React.useMemo(
     () => [
-      {
-        Header: "Edit/Remove",
-        accessor: "", // accessor is the "key" in the data
-      },
       {
         Header: "ID",
         accessor: "id",
@@ -57,7 +60,7 @@ export default function Admin() {
     []
   );
 
-  const data = useMemo(
+  const urlData = useMemo(
     () =>
       urlList.map((url) => {
         return {
@@ -72,19 +75,56 @@ export default function Admin() {
             url.createdDate.substring(0, 10) +
             " " +
             url.createdDate.substring(11, 19),
-          ttlInSeconds: url.ttlInSeconds
-            ? `${(url.ttlInSeconds / 60).toFixed(0)} Min`
-            : "",
+          ttlInSeconds: url.ttlInSeconds ? url.ttlInSeconds : "",
         };
       }),
 
     [urlList]
   );
-
-  const tableInstance = useTable({ columns, data });
+  const tableInstance = useTable({ columns, data: urlData }, tableHook);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
+
+  function handleClickOpen() {
+    setDialogOpen(true);
+  }
+
+  function tableHook(hook) {
+    hook.visibleColumns.push((columns) => [
+      {
+        id: "Edit/Remove",
+        Header: "Bearbeiten/Löschen",
+        Cell: ({ row }) => (
+          <>
+            <IconButton
+              onClick={() => {
+                setSelectedRow(row.values);
+                setDialogOpen(true);
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton onClick={() => handleDelete(row)}>
+              <DeleteIcon />
+            </IconButton>
+          </>
+        ),
+      },
+      ...columns,
+    ]);
+  }
+
+  async function handleDelete(row) {
+    try {
+      await fetch(`https://urlshortener.smef.io/urls/${row.values.id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <>
@@ -119,6 +159,15 @@ export default function Admin() {
           })}
         </tbody>
       </StyledTable>
+      {selectedRow ? (
+        <EditDialog
+          row={selectedRow}
+          isOpen={dialogOpen}
+          onSetDialogOpen={setDialogOpen}
+        />
+      ) : (
+        ""
+      )}
     </>
   );
 }
