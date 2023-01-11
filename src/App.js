@@ -1,12 +1,9 @@
 import styled from "styled-components";
-import "./App.css";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import BurgerMenu from "./components/BurgerMenu";
-import DiamondIcon from "@mui/icons-material/Diamond";
 import { Button } from "@mui/material";
 import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import useInput from "./components/inputHook";
 import { useState } from "react";
+import NavigationBar from "../src/components/NavBar";
 
 function App() {
   const [urlValue, setURLValue] = useInput("");
@@ -14,7 +11,7 @@ function App() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const newURL = { url: urlValue, ttlInSeconds: 60 };
+    const newURL = { url: urlValue, ttlInSeconds: 600 };
 
     await fetch("https://urlshortener.smef.io/urls", {
       method: "POST",
@@ -28,7 +25,7 @@ function App() {
         if (!response.ok) {
           throw Error(response.statusText);
         }
-        response.json();
+        return response.json();
       })
       .then((data) => {
         setShortURLValue(`https://urlshortener.smef.io/${data.id}`);
@@ -37,13 +34,7 @@ function App() {
 
   return (
     <>
-      <NavBar>
-        <LeftItems>
-          <BurgerMenu />
-          <DiamondIcon sx={{ fontSize: 35 }} />
-        </LeftItems>
-        <AccountBoxIcon sx={{ fontSize: 50 }} />
-      </NavBar>
+      <NavigationBar />
       <StyledMain>
         <StyledForm type="submit" onSubmit={handleSubmit}>
           {setURLValue}
@@ -64,23 +55,6 @@ function App() {
 }
 
 export default App;
-
-const NavBar = styled.nav`
-  width: 100vw;
-  height: 3.5rem;
-  position: fixed;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: gray;
-`;
-
-const LeftItems = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
 
 const StyledMain = styled.main`
   position: fixed;
