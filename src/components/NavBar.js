@@ -2,6 +2,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import BurgerMenu from "./BurgerMenu";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import styled from "styled-components";
+import LanguageSelector from "./LanguageSelector";
 
 export default function NavBar() {
   return (
@@ -10,7 +11,10 @@ export default function NavBar() {
         <BurgerMenu />
         <DiamondIcon sx={{ fontSize: 35 }} />
       </LeftItems>
-      <AccountBoxIcon sx={{ fontSize: 50 }} />
+      <RightItems>
+        <LanguageSelector />
+        <AccountBoxIcon sx={{ fontSize: 50 }} />
+      </RightItems>
     </NavigationBar>
   );
 }
@@ -31,4 +35,8 @@ const LeftItems = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+`;
+
+const RightItems = styled(LeftItems)`
+  gap: 0.5rem;
 `;

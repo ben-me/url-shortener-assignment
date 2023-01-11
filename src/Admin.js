@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import styled from "styled-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditDialog from "./components/EditDialog";
+import { LanguageProvider, Text } from "./components/LanguageContext";
 
 export default function Admin() {
   const [urlList, setUrlList] = useState([]);
@@ -39,19 +40,19 @@ export default function Admin() {
         accessor: "id",
       },
       {
-        Header: "Short URL",
+        Header: <Text tid="shortUrl" />,
         accessor: "shortUrl",
       },
       {
-        Header: "Original URL",
+        Header: <Text tid="originalUrl" />,
         accessor: "originalUrl",
       },
       {
-        Header: "Created",
+        Header: <Text tid="creation" />,
         accessor: "createdDate",
       },
       {
-        Header: "Lifetime",
+        Header: <Text tid="lifetime" />,
         accessor: "ttlInSeconds",
       },
     ],
@@ -89,7 +90,7 @@ export default function Admin() {
     hook.visibleColumns.push((columns) => [
       {
         id: "Edit/Remove",
-        Header: "Bearbeiten/Löschen",
+        Header: <Text tid="editDelete" />,
         Cell: ({ row }) => (
           <>
             <IconButton
@@ -129,7 +130,7 @@ export default function Admin() {
   }
 
   return (
-    <>
+    <LanguageProvider>
       <NavigationBar />
       <StyledTable {...getTableProps()}>
         <thead>
@@ -171,7 +172,7 @@ export default function Admin() {
       ) : (
         ""
       )}
-    </>
+    </LanguageProvider>
   );
 }
 
