@@ -4,8 +4,9 @@ import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined
 import useInput from "./components/inputHook";
 import { useState } from "react";
 import NavigationBar from "../src/components/NavBar";
+import { LanguageProvider, Text } from "./components/LanguageContext";
 
-function App() {
+export default function Home() {
   const [urlValue, setURLValue] = useInput("");
   const [shortURLValue, setShortURLValue] = useState("");
 
@@ -31,15 +32,14 @@ function App() {
         setShortURLValue(`https://urlshortener.smef.io/${data.id}`);
       });
   }
-
   return (
-    <>
+    <LanguageProvider>
       <NavigationBar />
       <StyledMain>
         <StyledForm type="submit" onSubmit={handleSubmit}>
           {setURLValue}
           <StyledMaterialButton variant="contained" size="small" type="submit">
-            Go!
+            <Text tid="shortenerButton"></Text>
           </StyledMaterialButton>
         </StyledForm>
         <Arrow sx={{ fontSize: 70 }} />
@@ -50,11 +50,9 @@ function App() {
           value={shortURLValue}
         />
       </StyledMain>
-    </>
+    </LanguageProvider>
   );
 }
-
-export default App;
 
 const StyledMain = styled.main`
   position: fixed;
