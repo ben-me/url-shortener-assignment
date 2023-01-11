@@ -1,0 +1,10 @@
+{
+    "shortenerButton": "Go!",
+    "homePage": "Homepage",
+    "adminPage": "Admin-Page",
+    "editDelete": "Edit/Delete",
+    "shortUrl": "Short URL",
+    "originalUrl": "Original URL",
+    "creation": "Created",
+    "lifetime": "Lifetime"
+}
