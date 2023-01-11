@@ -5,19 +5,31 @@ import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 
-export default function EditDialog({ row, isOpen, onSetDialogOpen }) {
+export default function EditDialog({
+  row,
+  isOpen,
+  onSetDialogOpen,
+  onFetchUrlData,
+}) {
   async function handleSubmit(event, row) {
     event.preventDefault();
     const form = event.target;
     try {
-      await fetch(`https://urlshortener.smef.io/urls/${row.id}`, {
-        method: "PUT",
-        credentials: "include",
-        body: {
-          url: form.url.value.toString(),
-          ttlInSeconds: form.ttl.value,
-        },
-      });
+      const response = await fetch(
+        `https://urlshortener.smef.io/urls/${row.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            url: form.url.value.toString(),
+            ttlInSeconds: form.ttl.value,
+          }),
+        }
+      );
+      if (response) {
+        onFetchUrlData();
+      }
     } catch (error) {
       console.error(error);
     }

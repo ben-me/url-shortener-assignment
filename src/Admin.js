@@ -7,7 +7,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import styled from "styled-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditDialog from "./components/EditDialog";
-import { Edit } from "@mui/icons-material";
 
 export default function Admin() {
   const [urlList, setUrlList] = useState([]);
@@ -86,10 +85,6 @@ export default function Admin() {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
-  function handleClickOpen() {
-    setDialogOpen(true);
-  }
-
   function tableHook(hook) {
     hook.visibleColumns.push((columns) => [
       {
@@ -117,10 +112,17 @@ export default function Admin() {
 
   async function handleDelete(row) {
     try {
-      await fetch(`https://urlshortener.smef.io/urls/${row.values.id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `https://urlshortener.smef.io/urls/${row.values.id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      if (response) {
+        fetchUrlData();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -164,6 +166,7 @@ export default function Admin() {
           row={selectedRow}
           isOpen={dialogOpen}
           onSetDialogOpen={setDialogOpen}
+          onFetchUrlData={fetchUrlData}
         />
       ) : (
         ""
