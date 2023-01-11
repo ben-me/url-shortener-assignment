@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { slide as Menu } from "react-burger-menu";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Text } from "./LanguageContext";
 
 export default function BurgerMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,8 +16,12 @@ export default function BurgerMenu() {
         isOpen={isMenuOpen}
         onStateChange={(state) => setIsMenuOpen(state.isOpen)}
       >
-        <Link href="/">Home</Link>
-        <Link href="/admin">Admin Page</Link>
+        <Link href="/">
+          <Text tid="homePage" />
+        </Link>
+        <Link href="/admin">
+          <Text tid="adminPage" />
+        </Link>
       </Menu>
     </BurgerMenuStyles>
   );
